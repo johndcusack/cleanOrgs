@@ -1,0 +1,11 @@
+Migrate files
+Rename to
+    clean_orgs_add_shortname
+    clean_orgs_extract_json
+    clean_orgs_extract_and_cache_json
+    clean_orgs_create_ods_table
+    clean_orgs_replace_successor
+    clean_orgs_update_names
+
+Update all references in docstring and any function calls to match new names
+Ensure any helpers are marked with the internal keyword
