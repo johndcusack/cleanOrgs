@@ -8,4 +8,4 @@ Rename to
     clean_orgs_update_names
 
 Update all references in docstring and any function calls to match new names
-Ensure any helpers are marked with the internal keyword
+Ensure any helpers are marked with the internal keyword add the family keyword to all roxygen comments
