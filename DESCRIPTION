@@ -1,13 +1,20 @@
 Package: cleanOrgs
-Title: What the Package Does (One Line, Title Case)
+Title: Tools for updating NHS organisation codes and adding names
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("John", "Cusack", ,email = "john.cusack@nhs.net", role = c("aut", "cre"))
+Description: Provides functions to extract and reconcile NHS organisation codes using the ODS API. 
+Includes tools to align organisations with their parent ICBs, and to add full and short names 
+for organisations in the South East Region.
+License: MIT
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 URL: https://github.com/johndcusack/cleanOrgs
 BugReports: https://github.com/johndcusack/cleanOrgs/issues
+Imports:
+  memoise,
+  httr2,
+  tidyr,
+  stringr,
+  dplyr
