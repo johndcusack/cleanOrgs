@@ -2,8 +2,7 @@ Migrate files
 
 Update all references in docstring and any function calls to match new names
 Ensure any helpers are marked with the internal keyword add the family keyword to all roxygen comments
-Remove requireNamespace calls and put all of that into the dependencies file
-add importFrom calls and export calls for any non-helper functions
+add export calls for any non-helper functions
 
 need to organise the files into a specific load order
 
