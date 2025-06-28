@@ -1,4 +1,4 @@
-clean_orgs_create_ods_table <- function(json_list) {
+cleanOrgs_create_ods_table <- function(json_list) {
 #' Create ODS table
 #'
 #' @description This function takes in a list of json files extracted from

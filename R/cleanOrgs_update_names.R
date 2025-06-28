@@ -1,4 +1,4 @@
-clean_orgs_update_names <- function(df,code_column,name_column,verbose=TRUE) {
+cleanOrgs_update_names <- function(df,code_column,name_column,verbose=TRUE) {
 
   #' Update organisation names
   #'
@@ -10,7 +10,7 @@ clean_orgs_update_names <- function(df,code_column,name_column,verbose=TRUE) {
   #'
   #' Note: This function does not merge or update superseded trusts and will use
   #' their most recent recorded name. To account for mergers, use
-  #' `replace_with_successor()` before calling this function.
+  #' `cleanOrgs_replace_succeeded()` before calling this function.
   #'
   #' @param df A dataframe containing organisation codes.
   #' @param code_column A string. The name of the column in `df` that contains organisation codes.
@@ -28,8 +28,8 @@ clean_orgs_update_names <- function(df,code_column,name_column,verbose=TRUE) {
     stop("The specified code_column does not exist in the dataframe.")
   }
 
-  org_list <- clean_orgs_get_json(df,code_column)
-  ods_table <-  clean_orgs_create_ods_table(org_list) |> dplyr::select(-successor_code)
+  org_list <- cleanOrgs_get_json(df,code_column)
+  ods_table <-  cleanOrgs_create_ods_table(org_list) |> dplyr::select(-successor_code)
 
 
   org_lookup <- setNames(ods_table$org_name, ods_table$org_code)

@@ -1,5 +1,5 @@
 
-clean_orgs_json_extraction <- function(df,code_column) {
+cleaOrgs_json_extraction <- function(df,code_column) {
   #' Extract ODS json list
   #'
   #' @description

@@ -1,4 +1,4 @@
-clean_orgs_add_shortname <- function(df, code_column,new_col_name){
+cleanOrgs_add_shortname <- function(df, code_column,new_col_name){
   #' Add short org names
     #'
   #' This function takes a dataframe and a column containing organisation codes,

@@ -1,4 +1,4 @@
-clean_orgs_add_icb_code <- function(df, code_column){
+cleanOrgs_add_icb_code <- function(df, code_column){
   #' Adds the ICB code associated with the organisation
     #'
   #' This function takes a dataframe and a column containing organisation codes,

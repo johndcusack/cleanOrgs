@@ -1,5 +1,5 @@
 
-#' clean_orgs_get_json
+#' cleanOrgs_get_json
 #'
 #' @description
 #' This is a memoised wrapper for an internal function that takes a column of NHS organisation codes
@@ -15,5 +15,5 @@
 #'
 #' @export
 
-clean_orgs_get_json <-  memoise::memoise(clean_orgs_json_extraction)
+cleanOrgs_get_json <-  memoise::memoise(cleanOrgs_json_extraction)
 
