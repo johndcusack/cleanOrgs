@@ -32,7 +32,7 @@ cleanOrgs_update_names <- function(df,code_column,name_column,verbose=TRUE) {
   ods_table <-  cleanOrgs_create_ods_table(org_list) |> dplyr::select(-successor_code)
 
 
-  org_lookup <- setNames(ods_table$org_name, ods_table$org_code)
+  org_lookup <- stats::setNames(ods_table$org_name, ods_table$org_code)
 
   df[[name_column]] <-dplyr::coalesce(
     unname(org_lookup[as.character(df[[code_column]])]),
