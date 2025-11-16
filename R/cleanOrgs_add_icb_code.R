@@ -9,6 +9,7 @@ cleanOrgs_add_icb_code <- function(df, code_column){
   #' @param code_column The name of the column in `df` that contains the lookup codes.
   #'
   #' @return A data frame with an additional column containing the ICB codes.
+  #' @export
 
 
   # Ensure the code_column exists in the dataframe

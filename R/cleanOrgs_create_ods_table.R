@@ -7,6 +7,11 @@ cleanOrgs_create_ods_table <- function(json_list) {
 #' The organisation code,
 #' The current organisation name as registered with the ODS
 #' The successor code for the organisation, if that code has been retired and replaced or merged
+#'
+#' @param json_list an ODS json file
+#'
+#' @export
+
 
 output_list <- vector("list",length = length(json_list))
 

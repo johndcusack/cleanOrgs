@@ -14,31 +14,29 @@ cleanOrgs_replace_succeeded <- function(df,code_column,verbose=TRUE) {
   #'
   #' This function will work on a code containing any organisation code registered in the ODS
   #' It will not work on site codes
-
-  source('setup_org_rec/cached_ods_json_list.R')
-  source('setup_org_rec/create_ods_table.R')
-
-  if (!requireNamespace("dplyr", quietly = TRUE)) {
-    stop("The 'dplyr' package is required but not installed. Please install it.")
-  }
+  #' @export
 
   if (!code_column %in% names(df)) {
     stop("The specified code_column does not exist in the dataframe.")
   }
 
-  sym_column <-  rlang::sym(code_column)
-  org_list <- cached_ods_json_list(df,code_column)
-  ods_table <-  create_ods_table(org_list)
+  # sym_column <-  rlang::sym(code_column)
+  org_list <- cleanOrgs_get_json(df,code_column)
+  ods_table <-  cleanOrgs_create_ods_table(org_list)
 
   ods_table <- ods_table |> dplyr::select(-org_name)
 
-  df_2 <- df |> dplyr::left_join(ods_table, by = join_by(!!sym_column == org_code))
+  df_2 <- dplyr::left_join(df,
+                           ods_table,
+                           by = stats::setNames("org_code",code_column))
 
-  df_2 <- df_2 |> dplyr::mutate(!!sym_column := if_else(successor_code == "None",
-                                                        !!sym_column,
-                                                        successor_code))
+  new_column <- dplyr::if_else(df_2$successor_code == "None" | is.na(df_2$successor_code),
+                               df_2[[code_column]],
+                               df_2$successor_code)
 
-  df_2 <-  df_2 |> dplyr::select(-successor_code)
+  df_2[[code_column]] <-  new_column
+check
+  df_2 <- df_2 |> dplyr::select(-successor_code)
 
   if (verbose){
     replacements <- sum(df_2[[code_column]] != df[[code_column]], na.rm = TRUE)

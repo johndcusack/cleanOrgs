@@ -15,14 +15,14 @@ cleanOrgs_add_shortname <- function(df, code_column,new_col_name){
   #'
   #' @examples
   #' df <- data.frame(org_code = c('QU9', 'RHW', 'QRL'))
-  #' df <- fn_short_org_names(df, 'org_code', 'short_org_name')
+  #' df <- cleanOrgs_add_shortname(df, 'org_code', 'short_org_name')
   #' print(df)
+  #' @export
 
   # Ensure the code_column exists in the dataframe
   if (!(code_column %in% colnames(df))) {
     stop(paste("Column", code_column, "does not exist in the dataframe"))
   }
-
 
   # setup names lookup as a named vector
   names_lookup <- c(

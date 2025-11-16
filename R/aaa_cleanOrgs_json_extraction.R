@@ -1,5 +1,5 @@
 
-cleaOrgs_json_extraction <- function(df,code_column) {
+cleanOrgs_json_extraction <- function(df,code_column) {
   #' Extract ODS json list
   #'
   #' @description
@@ -15,16 +15,13 @@ cleaOrgs_json_extraction <- function(df,code_column) {
   #' @param code_column the column within the dataframe that has the organisation codes
   #'
   #' @keywords internal
-  #' @import httr2
-
-
 
 
   if (!code_column %in% names(df)) {
     stop("The specified code_column does not exist in the dataframe.")
   }
 
-  codes <- unique(na.omit(df[[code_column]]))
+  codes <- unique(stats::na.omit(df[[code_column]]))
 
 # list assignment in R is more efficient in lists with a pre-allocated length so
 # that's what I'm doing here
