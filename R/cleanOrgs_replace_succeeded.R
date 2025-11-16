@@ -20,7 +20,6 @@ cleanOrgs_replace_succeeded <- function(df,code_column,verbose=TRUE) {
     stop("The specified code_column does not exist in the dataframe.")
   }
 
-  # sym_column <-  rlang::sym(code_column)
   org_list <- cleanOrgs_get_json(df,code_column)
   ods_table <-  cleanOrgs_create_ods_table(org_list)
 
@@ -35,7 +34,7 @@ cleanOrgs_replace_succeeded <- function(df,code_column,verbose=TRUE) {
                                df_2$successor_code)
 
   df_2[[code_column]] <-  new_column
-check
+
   df_2 <- df_2 |> dplyr::select(-successor_code)
 
   if (verbose){
