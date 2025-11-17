@@ -21,13 +21,13 @@ cleanOrgs_create_ods_table <- function(json_list) {
 
     org_code <- json_data_df |>
       tidyr::unnest_wider(json_data) |>
-      tidyr::unnest_wider("OrgId") |>
-      dplyr::pull("extension") |>
+      tidyr::unnest_wider(OrgId) |>
+      dplyr::pull(extension) |>
       dplyr::first()
 
     org_name <- json_data_df |>
       tidyr::hoist(json_data,"Name") |>
-      dplyr::pull("Name") |>
+      dplyr::pull(Name) |>
       dplyr::first() |>
       stringr::str_to_title() |>
       stringr::str_replace("Nhs","NHS")
@@ -39,29 +39,30 @@ cleanOrgs_create_ods_table <- function(json_list) {
       tibble::tibble()
     } else{
       successor_check |>
-        dplyr::select("Succs") |>
-        tidyr::unnest_wider("Succs") |>
-        tidyr::unnest_longer("Succ") |>
-        tidyr::unnest_wider("Succ") |>
-        tidyr::unnest_wider("Target") |>
-        tidyr::unnest_wider("OrgId") |>
+        dplyr::select(Succs) |>
+        tidyr::unnest_wider(Succs) |>
+        tidyr::unnest_longer(Succ) |>
+        tidyr::unnest_wider(Succ) |>
+        tidyr::unnest_wider(Target) |>
+        tidyr::unnest_wider(OrgId) |>
         dplyr::filter(Type == 'Successor') }
 
     successor_code <- if (nrow(successor_check) == 1){
-      dplyr::pull(successor_check, "extension")
+      dplyr::pull(successor_check, extension)
     } else if (nrow(successor_check) == 0){
       'None'
     } else {
       'multiple_successors'
     }
 
-    output <- c(org_code,org_name,successor_code)
-
-    output_list[[i]] <- output
+   output_list[[i]] <- list(
+     org_code = org_code,
+     org_name = org_name,
+     successor_code = successor_code
+   )
   }
 
-  output_df <- suppressWarnings(tibble::as_tibble(do.call(rbind,output_list), .name_repair = 'unique'))
-  colnames(output_df) <- c("org_code","org_name","successor_code")
+  output_df <- dplyr::bind_rows(output_list)
 
   return(output_df)
 }
