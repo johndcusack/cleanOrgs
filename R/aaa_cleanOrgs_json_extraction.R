@@ -40,6 +40,12 @@ cleanOrgs_json_extraction <- function(df,code_column) {
     json_data <- httr2::resp_body_json(response)
 
     json_list[[i]] <- json_data
+
+    # Adding a short randomised delay to protect the API from repeated calls.
+    # Note that the memoised version of this function (cleanOrgs_get_json) adds
+    # caching to account for repeated calls that use the same parameters
+    Sys.sleep(runif(1, 0.2, 0.5))
+
     },error = function(e) {
       warning(sprintf("Failed to retrieve data for code %s: %s", code, e$message))
       json_list[[i]] <- NULL
@@ -47,3 +53,23 @@ cleanOrgs_json_extraction <- function(df,code_column) {
   }
   return(json_list)
 }
+
+
+#' cleanOrgs_get_json
+#'
+#' @description
+#' This is a memoised wrapper for an internal function that takes a column of NHS organisation codes
+#' and returns a list of JSON objects extracted from the Organisational Data Service's API.
+#' Memoise is used to cache the results of This is an internal helper function that gets used by clean_orgs_get_json.R, which
+#' wraps this function with memoise caching the result of the API call in memory.
+#' Caching prevents multiple repeated calls to the API,
+#' reduces demand on the API itself and
+#' speeds up the function when used repeatedly.
+#'
+#' @param df the dataframe that has the column containing organisation codes
+#' @param code_column the column within the dataframe that has the organisation codes
+#'
+#' @export
+
+cleanOrgs_get_json <-  memoise::memoise(cleanOrgs_json_extraction)
+
