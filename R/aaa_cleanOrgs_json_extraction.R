@@ -40,6 +40,12 @@ cleanOrgs_json_extraction <- function(df,code_column) {
     json_data <- httr2::resp_body_json(response)
 
     json_list[[i]] <- json_data
+
+    # Adding a short randomised delay to protect the API from repeated calls.
+    # Note that the memoised version of this function (cleanOrgs_get_json) adds
+    # caching to account for repeated calls that use the same parameters
+    Sys.sleep(runif(1, 0.2, 0.5))
+
     },error = function(e) {
       warning(sprintf("Failed to retrieve data for code %s: %s", code, e$message))
       json_list[[i]] <- NULL
