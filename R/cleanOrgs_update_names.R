@@ -27,7 +27,7 @@ cleanOrgs_update_names <- function(df,code_column,name_column,verbose=TRUE) {
   }
 
   org_list <- cleanOrgs_get_json(df,code_column)
-  ods_table <-  cleanOrgs_create_ods_table(org_list) |> dplyr::select(-rlang::.data$successor_code)
+  ods_table <-  cleanOrgs_create_ods_table(org_list) |> dplyr::select("successor_code")
 
   org_lookup <- stats::setNames(ods_table$org_name, ods_table$org_code)
 
