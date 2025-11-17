@@ -21,13 +21,13 @@ cleanOrgs_create_ods_table <- function(json_list) {
 
     org_code <- json_data_df |>
       tidyr::unnest_wider(json_data) |>
-      tidyr::unnest_wider(rlang::.data$OrgId) |>
-      dplyr::pull(rlang::.data$extension) |>
+      tidyr::unnest_wider("OrgId") |>
+      dplyr::pull("extension") |>
       dplyr::first()
 
     org_name <- json_data_df |>
       tidyr::hoist(json_data,"Name") |>
-      dplyr::pull(rlang::.data$Name) |>
+      dplyr::pull("Name") |>
       dplyr::first() |>
       stringr::str_to_title() |>
       stringr::str_replace("Nhs","NHS")
@@ -39,16 +39,16 @@ cleanOrgs_create_ods_table <- function(json_list) {
       tibble::tibble()
     } else{
       successor_check |>
-        dplyr::select(rlang::.data$Succs) |>
-        tidyr::unnest_wider(rlang::.data$Succs) |>
-        tidyr::unnest_longer(rlang::.data$Succ) |>
-        tidyr::unnest_wider(rlang::.data$Succ) |>
-        tidyr::unnest_wider(rlang::.data$Target) |>
-        tidyr::unnest_wider(rlang::.data$OrgId) |>
-        dplyr::filter(rlang::.data$Type == 'Successor') }
+        dplyr::select("Succs") |>
+        tidyr::unnest_wider("Succs") |>
+        tidyr::unnest_longer("Succ") |>
+        tidyr::unnest_wider("Succ") |>
+        tidyr::unnest_wider("Target") |>
+        tidyr::unnest_wider("OrgId") |>
+        dplyr::filter(Type == 'Successor') }
 
     successor_code <- if (nrow(successor_check) == 1){
-      dplyr::pull(successor_check, rlang::.data$extension)
+      dplyr::pull(successor_check, "extension")
     } else if (nrow(successor_check) == 0){
       'None'
     } else {
