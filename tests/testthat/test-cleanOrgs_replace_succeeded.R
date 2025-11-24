@@ -4,6 +4,9 @@ test_that("cleanOrgs_replace_succeeded replaces superseded codes", {
   out <- cleanOrgs::cleanOrgs_replace_succeeded(df, code_column = "org_code")
 
   expect_equal(out$org_code[df$org_code == "R1C"], "RW1")
+
+  # Row count unchanged
+  expect_equal(nrow(out), nrow(df))
 })
 
 test_that("cleanOrgs_replace_succeeded leaves non-superseded codes unchanged", {
@@ -12,4 +15,7 @@ test_that("cleanOrgs_replace_succeeded leaves non-superseded codes unchanged", {
   out <- cleanOrgs::cleanOrgs_replace_succeeded(df, code_column = "org_code")
 
   expect_equal(out$org_code[df$org_code == "RTH"], "RTH")
+
+  # Row count unchanged
+  expect_equal(nrow(out), nrow(df))
 })
