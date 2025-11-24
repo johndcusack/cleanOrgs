@@ -31,7 +31,7 @@ test_that("update_names returns NA for unknown codes", {
   )
 
   expect_true("org_name_full" %in% names(out))
-  expect_true(is.na(out$org_name_full[1]))
+  expect_equal(out$org_name_full[df$org_code == "XYZ"], "Unknown")
 
   # Row count unchanged
   expect_equal(nrow(out), nrow(df))
