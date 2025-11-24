@@ -15,7 +15,7 @@ The goal is to make it easy to bring historic data into line with current struct
 Install the development version from GitHub:
 ```r
 # install.packages("devtools")
-devtools::install_github("yourusername/cleanOrgs")
+devtools::install_github("johndcusack/cleanOrgs")
 ```
 
 ## Example workflow
