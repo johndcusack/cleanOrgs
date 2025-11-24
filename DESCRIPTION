@@ -1,6 +1,6 @@
 Package: cleanOrgs
 Title: Tools for updating NHS organisation codes and adding names
-Version: 0.0.0.9000
+Version: 0.0.10
 Authors@R: 
     person("John", "Cusack", ,email = "john.cusack@nhs.net", role = c("aut", "cre"))
 Description: Provides functions to extract and reconcile NHS organisation codes using the ODS API.
