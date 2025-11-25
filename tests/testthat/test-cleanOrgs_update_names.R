@@ -20,14 +20,17 @@ test_that("update_names adds full organisation names for known codes", {
   expect_equal(nrow(out), nrow(df))
 })
 
-test_that("update_names returns NA for unknown codes", {
+test_that("update_names returns Unknown for unknown codes", {
 
   df <- data.frame(org_code = c("XYZ"), stringsAsFactors = FALSE)
 
-  out <- cleanOrgs::cleanOrgs_update_names(
+  expect_warning(
+    out <- cleanOrgs::cleanOrgs_update_names(
     df,
     code_column = "org_code",
     name_column = "org_name_full"
+  ),
+  "Failed to retrieve data for code XYZ"
   )
 
   expect_true("org_name_full" %in% names(out))
