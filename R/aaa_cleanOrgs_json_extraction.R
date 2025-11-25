@@ -3,19 +3,18 @@ cleanOrgs_json_extraction <- function(df,code_column) {
   #' Extract ODS json list
   #'
   #' @description
-    #' This function takes a column of NHS organisation codes and returns a list of
-    #' JSON objects extracted from the Organisational Data Service's API.
-    #' This is an internal helper function that gets used by clean_orgs_get_json.R, which
-    #' wraps this function with memoise to cache results.
-    #' Caching prevents multiple repeated calls to the API,
-    #' reduces demand on the API itself and
-    #' speeds up the function when used repeatedly.
+  #' This function takes a column of NHS organisation codes and returns a list of
+  #' JSON objects extracted from the Organisational Data Service's API.
+  #' This is an internal helper function that gets used by clean_orgs_get_json.R, which
+  #' wraps this function with memoise to cache results.
+  #' Caching prevents multiple repeated calls to the API,
+  #' reduces demand on the API itself and
+  #' speeds up the function when used repeatedly.
   #'
   #' @param df the dataframe that has the column containing organisation codes
   #' @param code_column the column within the dataframe that has the organisation codes
   #'
   #' @keywords internal
-
 
   if (!code_column %in% names(df)) {
     stop("The specified code_column does not exist in the dataframe.")
@@ -23,35 +22,54 @@ cleanOrgs_json_extraction <- function(df,code_column) {
 
   codes <- unique(stats::na.omit(df[[code_column]]))
 
-# list assignment in R is more efficient in lists with a pre-allocated length so
-# that's what I'm doing here
+  # list assignment in R is more efficient in lists with a pre-allocated length so
+  # that's what I'm doing here
   json_list <- vector("list",length = length(codes))
   base_url <- "https://directory.spineservices.nhs.uk/ORD/2-0-0/organisations/"
 
+
+  #helper function to  extract a JSON for the relevant code
+  fetch_json <- function(code, base_url) {
+
+    #another helper to handle missing/wrong codes
+    make_dummy_json <- function(code) {
+      list(
+        Organisation = list(
+          OrgId = list(extension = code),
+          Name = NA_character_
+        )
+      )
+    }
+
+    full_url <- paste0(base_url,code)
+
+    json_result <- tryCatch(
+      {
+        # Make the request
+        resp <- httr2::request(full_url) |>
+          httr2::req_headers(Accept = "application/json") |>
+          httr2::req_perform()
+
+        # Parse JSON
+        httr2::resp_body_json(resp)
+      },
+      error = function(e) {
+        #is this going to show up or be hidden by the child environment?
+        warning(sprintf("Failed to retrieve data for code %s: %s", code, e$message))
+        make_dummy_json(code)
+      }
+    )
+    return(json_result)
+  }
+
   for (i in seq_along(codes)) {
     code <- codes[i]
-    full_url <-  paste0(base_url,code)
-
-    tryCatch({
-    response <-  httr2::request(full_url) |>
-      httr2::req_headers(Accept = 'application/json') |>
-      httr2::req_perform()
-
-    json_data <- httr2::resp_body_json(response)
-
-    json_list[[i]] <- json_data
-
-    # Adding a short randomised delay to protect the API from repeated calls.
-    # Note that the memoised version of this function (cleanOrgs_get_json) adds
-    # caching to account for repeated calls that use the same parameters
+    json_list[[i]] <- fetch_json(code,base_url)
     Sys.sleep(stats::runif(1, 0.2, 0.5))
-
-    },error = function(e) {
-      warning(sprintf("Failed to retrieve data for code %s: %s", code, e$message))
-      json_list[[i]] <- NULL
-    })
   }
+
   return(json_list)
+
 }
 
 
