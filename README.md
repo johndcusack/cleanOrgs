@@ -72,6 +72,20 @@ Additionally, the full names of NHS organisations are often long, creating layou
 - reducing prep time for reporting and dashboards
 - ensuring reproducibility across analysis and datasets
 
+## Notes and Limitations
+
+### Short names are hard coded
+
+The NHS does not publish an official list of short names for organisations.
+The short names used in this package reflect usage within NHS England’s South East Regional Data & Analytics team.
+These can be revised or extended in future versions if a standard source becomes available.
+
+### ICB codes are currently mapped using a lookup table
+
+The current version of the package uses a lookup table to associate provider Trusts with their partner ICBs.
+This keeps the workflow lightweight and avoids adding additional nested API parsing that would be required to determine these relationships dynamically.
+A full API-driven ICB extraction may be added in a future update.
+
 ## Project status
 This package is fully functional.
 Core workflows are stable and tested using real NHS metadata.
