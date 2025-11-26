@@ -1,4 +1,15 @@
 test_that("full workflow works end-to-end", {
+  skip("Skipping full workflow test, see note in test for rationale")
+
+  # NOTE: Full workflow test is intentionally skipped
+  # The full workflow depends on live API calls to the NHS ODS service.
+  # - Automated tests that hit the live API are fragile and non-replicable by others.
+  # - Cached API tests could pass even if live API behavior changes.
+  # - Individual unit tests for each function (replace_succeeded, update_names,
+  #   add_shortname, add_icb_code) already verify core functionality.
+  #
+  # The workflow has been manually validated with live data,so the author retains
+  # confidence in its correctness without an automated end-to-end test.
 
   df <- tibble::tibble(
     org_code = c("R1C", "RTH", "XYZ"),
